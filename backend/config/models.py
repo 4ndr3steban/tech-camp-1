@@ -8,7 +8,7 @@ class Base(DeclarativeBase):
 
 
 # Tabla para guardar las queries de los usuarios
-class Task(Base):
+class Ttask(Base):
     __tablename__ = "task"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
@@ -22,7 +22,7 @@ class Task(Base):
     id_user: Mapped[int] = mapped_column(ForeignKey('user.id'), nullable=False)
 
 
-class User(Base):
+class Tuser(Base):
     __tablename__ = "user"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
