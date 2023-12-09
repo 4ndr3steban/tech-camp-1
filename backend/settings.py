@@ -9,6 +9,9 @@ class Settings:
     MYSQL_USER: str
     MYSQL_PASS: str
     MYSQL_DB: str
+    ALGORITHM: str
+    ACCESS_TOKEN_DURATION: int
+    SECRET: str
 
 # Cargar variables de entorno
 load_dotenv()
@@ -17,4 +20,7 @@ load_dotenv()
 settings = Settings(MYSQL_HOST = os.getenv("MYSQL_HOST"),
                     MYSQL_USER = os.getenv("MYSQL_USER"),
                     MYSQL_PASS = os.getenv("MYSQL_PASS"),
-                    MYSQL_DB = os.getenv("MYSQL_DB"))
+                    MYSQL_DB = os.getenv("MYSQL_DB"),
+                    ALGORITHM = os.getenv("ALGORITHM"),
+                    ACCESS_TOKEN_DURATION = os.getenv("ACCESS_TOKEN_DURATION"),
+                    SECRET = os.getenv("SECRET"))

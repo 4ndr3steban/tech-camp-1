@@ -29,12 +29,13 @@ def creat_item(db: Session, table: Tuser | Ttask, item: User | Task):
 
 
 def read_item(db: Session, table: Tuser | Ttask, id: int):
-    """ Obtener una query de un post guardado en la db
+    """ Obtener un item
 
     input: - db: session de conección con la db
-           - id_post: id del post en el que está publicada la query
+           - table: tabla en la cual se va a insetar el dato
+           - id: id del item
 
-    output: query
+    output: item
     
     """
     
@@ -43,13 +44,29 @@ def read_item(db: Session, table: Tuser | Ttask, id: int):
     return db_query[0]
 
 
-def read_items_by_userid(db: Session, id_user: int):
-    """ Obtener una query de un post guardado en la db
+def read_user(db: Session, username: str):
+    """ Obtener un item
 
     input: - db: session de conección con la db
-           - id_post: id del post en el que está publicada la query
+           - table: tabla en la cual se va a insetar el dato
+           - id: id del item
 
-    output: query
+    output: item
+    
+    """
+    
+    db_query = db.query(Tuser).filter(Tuser.username == username).all()
+
+    return db_query[0]
+
+
+def read_items_by_userid(db: Session, id_user: int):
+    """ Obtener las tareas de un usuario guardado en la db
+
+    input: - db: session de conección con la db
+           - id_user: id del user del que se quieren las tareas
+
+    output: tareas
     
     """
     
@@ -59,6 +76,14 @@ def read_items_by_userid(db: Session, id_user: int):
 
 
 def delete_item(db: Session, id: int):
+    """ Eliminar un item de la db
+
+    input: - db: session de conección con la db
+           - id: id del item que se va a eliminar
+
+    output: 1
+    
+    """
     
     db.query(Ttask).filter(Ttask.id == id).delete()
 

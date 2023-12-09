@@ -7,7 +7,6 @@ class Base(DeclarativeBase):
     pass
 
 
-# Tabla para guardar las queries de los usuarios
 class Ttask(Base):
     __tablename__ = "task"
 
@@ -26,5 +25,5 @@ class Tuser(Base):
     __tablename__ = "user"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    username: Mapped[str] = mapped_column(String(50), nullable=False)
+    username: Mapped[str] = mapped_column(String(50), nullable=False, unique=True)
     password: Mapped[str] = mapped_column(String(100), nullable=False)

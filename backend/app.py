@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from routes import user_routes
 # from Routes import
 
 # Instancia principal de la API
@@ -15,7 +16,5 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 # Incluir los endpoints para la API
-app.include_router(bigQueryConsults.router)
-app.include_router(usersQueries.router)
+app.include_router(user_routes.router)
