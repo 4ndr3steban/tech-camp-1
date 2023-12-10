@@ -4,6 +4,7 @@ from pydantic import BaseModel
 class Task(BaseModel):
     id: int | None = None
     fecha_vencimiento: str
+    periodicidad: str | None = None
     categoria: str
     estado: str | None = "pendiente"
     titulo: str

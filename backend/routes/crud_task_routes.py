@@ -1,15 +1,10 @@
 from fastapi import APIRouter, HTTPException, status, Depends, UploadFile, File
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from typing import Union
-from jose import jwt, JWTError
-from passlib.context import CryptContext
-from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 from config.db import engine
 from core.crud import creat_item, read_item, read_user, read_items_by_userid, delete_item
 from core.authentication import current_user
 from settings import settings
-from config.models import Ttask, Tuser
+from config.models import Ttask
 from schemas.task import Task
 from schemas.user import User
 
