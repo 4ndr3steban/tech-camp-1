@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routes import user_routes
+from routes import user_routes, crud_task_routes
 # from Routes import
 
 # Instancia principal de la API
@@ -18,3 +18,4 @@ app.add_middleware(
 
 # Incluir los endpoints para la API
 app.include_router(user_routes.router)
+app.include_router(crud_task_routes.router)

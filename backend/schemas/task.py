@@ -8,6 +8,6 @@ class Task(BaseModel):
     estado: str | None = "pendiente"
     titulo: str
     descripcion: str | None = None
-    info_adic1: str | None = None
-    infor_adic2: str | None = None
-    id_user: int
+    info_adic: str | None = None
+    archivo: bytes | None = None
+    id_user: int | None = None

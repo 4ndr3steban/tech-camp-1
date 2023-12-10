@@ -11,13 +11,14 @@ from config.models import Ttask, Tuser
 from schemas.task import Task
 from schemas.user import User
 
-# Instancia para manejar el endpoint para el manejo de la db de MySql
+
 router = APIRouter(prefix="/user",
                     tags=["user management"],
                     responses={status.HTTP_404_NOT_FOUND: {"response": "not found"}})
 
 
 crypt = CryptContext(schemes=["bcrypt"])
+
 
 # Endpoints -------------------------------------------------------------
 
@@ -41,7 +42,7 @@ async def login(form: OAuth2PasswordRequestForm = Depends()):
 
 
 @router.post("/register", status_code = status.HTTP_202_ACCEPTED)
-async def login(user: User):
+async def login(user: OAuth2PasswordRequestForm = Depends()):
     
     try:
         user_db = read_user(Session(engine), user.username)
@@ -51,9 +52,8 @@ async def login(user: User):
         pass
     
     hashed_password = crypt.hash(user.password)
-    user.password = hashed_password
 
-    item_id = creat_item(Session(engine), Tuser, user)
+    item_id = creat_item(Session(engine), Tuser, User(username=user.username, password=hashed_password))
 
     access_token = {"sub": str(item_id),
                     "exp": datetime.utcnow() + timedelta(minutes= int(settings.ACCESS_TOKEN_DURATION))}
