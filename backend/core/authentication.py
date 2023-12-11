@@ -13,7 +13,16 @@ oauth2 = OAuth2PasswordBearer(tokenUrl="user/login")
 
 crypt = CryptContext(schemes=["bcrypt"])
 
+
 async def auth_user(token: str = Depends(oauth2)):
+    """ Autentica al usuario desencriptando el token y buscándolo en la base de datos.
+
+    Args:
+    - `token` (str): Token de acceso.
+
+    Returns:
+    - `User`: Información del usuario autenticado.
+    """
 
     exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,

@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-# Clase para manejar los datos de un post como un Schema
+
 class Task(BaseModel):
     id: int | None = None
     fecha_vencimiento: str

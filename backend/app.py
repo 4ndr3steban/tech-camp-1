@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes import user_routes, crud_task_routes, consult_task_routes, mails_routes
-# from Routes import
 
 # Instancia principal de la API
 app = FastAPI()
