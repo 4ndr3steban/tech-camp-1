@@ -30,30 +30,6 @@ async def add_task(task: Task, user: User = Depends(current_user)):
     item = creat_item(Session(engine), Ttask, task)
     return {"database_item_id": item}
 
-"""
-@router.post("/uploadfile", status_code = status.HTTP_202_ACCEPTED)
-async def upload_file(task_id: int, file: UploadFile = File(...), user: User = Depends(current_user)):
-    
-    db = Session(engine)
-    task_db = db.query(Ttask).filter(Ttask.id == task_id).first()
-
-    if user.id != task_db.id_user:
-        raise HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Credenciales de autenticación inválidas para esta tarea",
-        headers={"WWW-Authenticate": "Bearer"})
-
-    with open(file.filename, "wb") as f:
-        content = await file.read()
-        f.write(content)
-
-    task_db.archivo = file.filename
-
-    db.add(task_db)
-    db.commit()
-
-    return {"database_item_id": task_db.id}
-"""
 
 @router.put("/updatetask", status_code = status.HTTP_202_ACCEPTED)
 async def update_task(task: Task,  user: User = Depends(current_user)):
@@ -82,10 +58,10 @@ async def update_task(task: Task,  user: User = Depends(current_user)):
 
 
 @router.delete("/deletetask", status_code = status.HTTP_202_ACCEPTED)
-async def delete_task(task: Task, user: User = Depends(current_user)):
+async def delete_task(task_id: int, user: User = Depends(current_user)):
     
     db = Session(engine)
-    task_db = db.query(Ttask).filter(Ttask.id == task.id).first()
+    task_db = db.query(Ttask).filter(Ttask.id == task_id).first()
     
     if not task_db:
         raise HTTPException(
@@ -98,7 +74,7 @@ async def delete_task(task: Task, user: User = Depends(current_user)):
         detail="Credenciales de autenticación inválidas para esta tarea",
         headers={"WWW-Authenticate": "Bearer"})
     
-    delete_item(Session(engine), task.id)
+    delete_item(Session(engine), task_id)
         
     
     return {"response": True}

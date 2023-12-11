@@ -50,19 +50,26 @@ async def statistics(user: User = Depends(current_user)):
     tasks = list(filter(lambda t: t.fecha_vencimiento in formatted_dates or check_period(t.periodicidad, days_of_week), tasks))
 
     total_tasks = len(tasks)
-    task_cat1 = len(list(filter(lambda t: t.categoria == "1", tasks)))
-    task_cat2 = len(list(filter(lambda t: t.categoria == "2", tasks)))
-    task_cat3 = len(list(filter(lambda t: t.categoria == "3", tasks)))
-    accom_tasks = len(list(filter(lambda t: t.estado == "lograda", tasks)))
-    pend_tasks = len(list(filter(lambda t: t.estado == "pendiente", tasks)))
+    task_cat1 = len(list(filter(lambda t: t.categoria == "trabajo", tasks)))
+    task_cat2 = len(list(filter(lambda t: t.categoria == "salud", tasks)))
+    task_cat3 = len(list(filter(lambda t: t.categoria == "eventos", tasks)))
+    task_cat4 = len(list(filter(lambda t: t.categoria == "academico", tasks)))
+    pend_tasks = len(list(filter(lambda t: t.estado == "por hacer", tasks)))
+    prog_tasks = len(list(filter(lambda t: t.estado == "en progreso", tasks)))
+    fin_tasks = len(list(filter(lambda t: t.estado == "finalizado", tasks)))
+    canc_tasks = len(list(filter(lambda t: t.estado == "cancelado", tasks)))
 
     ans = {
         "total_task_of_week": total_tasks,
-        "task_per_category": {"c1": task_cat1, "c2": task_cat2, "c3": task_cat3},
-        "accomplished_tasks": accom_tasks,
+        "task_per_category": {"trabajo": task_cat1, "salud": task_cat2, "eventos": task_cat3, "academico": task_cat4},
+        "accomplished_tasks": fin_tasks,
         "pending_tasks": pend_tasks,
-        "days": days_of_week
+        "inprogres_tasks": prog_tasks,
+        "canceled_tasks": canc_tasks
     }
 
     return ans
 
+
+
+"7:30,12"
