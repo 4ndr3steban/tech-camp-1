@@ -134,7 +134,6 @@ async def update_task(task: Task,  user: User = Depends(current_user)):
         task_db.titulo = task.titulo
         task_db.descripcion = task.descripcion
         task_db.info_adic = task.info_adic
-        task_db.archivo = task.archivo
 
         # Agregar de nuevo la tarea a la db
         db.add(task_db)

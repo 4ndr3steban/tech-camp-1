@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import jwt, JWTError
+from fastapi.security import OAuth2PasswordRequestForm
+from jose import jwt
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
@@ -58,13 +58,11 @@ async def login(user: OAuth2PasswordRequestForm = Depends()):
     - `Token`: Token de acceso para el usuario autenticado.
     """
     
-    try:
-        # Mirar si el usuario ya existe
-        user_db = read_user(Session(engine), user.username)
-        if user_db != None:
-            raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre de usuario ya existe")
-    except:
-        pass
+    # Mirar si el usuario ya existe
+    user_db = read_user(Session(engine), user.username)
+    if user_db != None:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="El nombre de usuario ya existe")
+
     
     # Encriptar contraseña
     hashed_password = crypt.hash(user.password)

@@ -56,9 +56,9 @@ def read_user(db: Session, username: str):
     
     """
     
-    db_query = db.query(Tuser).filter(Tuser.username == username).all()
+    db_query = db.query(Tuser).filter(Tuser.username == username).first()
 
-    return db_query[0]
+    return db_query
 
 
 def read_items_by_userid(db: Session, id_user: int):
