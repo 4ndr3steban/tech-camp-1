@@ -57,7 +57,7 @@ async def statistics(user: User = Depends(current_user)):
             
             """
 
-            hora_periodo = period.split(",")
+            hora_periodo = period.split(",") if period is not None else ["-1","-1"]
             dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']
 
             if hora_periodo[1] == "d":

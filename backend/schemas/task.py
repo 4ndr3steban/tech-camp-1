@@ -10,5 +10,4 @@ class Task(BaseModel):
     titulo: str
     descripcion: str | None = None
     info_adic: str | None = None
-    archivo: bytes | None = None
     id_user: int | None = None

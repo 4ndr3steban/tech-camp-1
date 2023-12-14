@@ -1,12 +1,13 @@
 from sqlalchemy import select, insert
 from sqlalchemy.orm import Session
 from config.db import engine
-from config.models import Tuser, Ttask
+from config.models import Tuser, Ttask, Tfiles
 from schemas.task import Task
 from schemas.user import User
+from schemas.file import Filedb
 
 
-def creat_item(db: Session, table: Tuser | Ttask, item: User | Task):
+def creat_item(db: Session, table: Tuser | Ttask | Tfiles, item: User | Task | Filedb):
     """ insertar un elemento en la db
 
     input: - db: session de conección con la db
@@ -28,7 +29,7 @@ def creat_item(db: Session, table: Tuser | Ttask, item: User | Task):
     return res.lastrowid
 
 
-def read_item(db: Session, table: Tuser | Ttask, id: int):
+def read_item(db: Session, table: Tuser | Ttask | Tfiles, id: int):
     """ Obtener un item
 
     input: - db: session de conección con la db

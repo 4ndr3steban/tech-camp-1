@@ -1,13 +1,15 @@
 ### API crud para las tareas  ###
 
-from fastapi import APIRouter, HTTPException, status, Depends
+from fastapi import APIRouter, HTTPException, status, Depends, UploadFile, File
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 from config.db import engine
-from core.crud import creat_item, read_items_by_userid, delete_item
+from core.crud import creat_item, read_items_by_userid, delete_item, read_item
 from core.authentication import current_user
-from config.models import Ttask
+from config.models import Ttask, Tfiles
 from schemas.task import Task
 from schemas.user import User
+from schemas.file import Filedb
 
 
 router = APIRouter(prefix="/task",
@@ -30,7 +32,7 @@ async def read_task(user: User = Depends(current_user)):
     try:
         # Obtener las tareas de la db 
         tasks = read_items_by_userid(Session(engine), user.id)
-        return tasks  
+        return tasks
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al obtener las tareas: {str(e)}")  
 
@@ -55,6 +57,52 @@ async def add_task(task: Task, user: User = Depends(current_user)):
         return {"database_item_id": item}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error al agregar la tarea: {str(e)}")
+    
+
+@router.post("/uploadfile", status_code = status.HTTP_202_ACCEPTED)
+async def upload_file(task_id: int, file: UploadFile = File(...), user: User = Depends(current_user)):
+    """ Cargar un archivo asociado a una tarea en la base de datos.
+
+    Args:
+    - `task_id` (int): id de la tarea asociada
+    - `file` (File): archivo a cargar
+
+    Returns:
+    - `json`: id del objeto guardado en la base de datos
+    """
+
+    try:
+        db = Session(engine)
+        name = file.filename
+        content_type = file.content_type
+        contents = await file.read()
+        creat_item(db, Tfiles, Filedb(id=task_id,content=contents,name=name, content_type=content_type))
+        return {"database_item": name}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al cargar el archivo: {str(e)}")
+    
+
+@router.get("/downloadfile", status_code = status.HTTP_202_ACCEPTED)
+async def upload_file(task_id: int, user: User = Depends(current_user)):
+    """ Obtener un archivo asociado a una tarea en la base de datos.
+
+    Args:
+    - `task_id` (int): id de la tarea asociada
+
+    Returns:
+    - `json`: id del objeto guardado en la base de datos
+    """
+    try:
+        db_file = read_item(Session(engine), Tfiles, task_id)
+        if db_file is None:
+            raise HTTPException(status_code=404, detail="File not found")
+
+        # Construir la respuesta
+        response = StreamingResponse(iter([db_file.content]), media_type=db_file.content_type)
+        response.headers["Content-Disposition"] = f"attachment; filename={db_file.name}"
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error al descargar el archivo: {str(e)}")
 
 
 @router.put("/updatetask", status_code = status.HTTP_202_ACCEPTED)
