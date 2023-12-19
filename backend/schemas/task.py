@@ -3,7 +3,7 @@ from pydantic import BaseModel
 
 class Task(BaseModel):
     id: int | None = None
-    fecha_vencimiento: str
+    fecha_vencimiento: str | None = None
     periodicidad: str | None = None
     categoria: str
     estado: str | None = "pendiente"
